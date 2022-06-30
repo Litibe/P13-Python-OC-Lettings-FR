@@ -17,8 +17,12 @@ jobs:
           pypi-cache: false
       - run:
           command: |
-            pytest --version
-          name: Test
+            pytest
+          name: Pyest
+      - run:
+          command: |
+            flake8
+          name: Flake8
 workflows:
   PinelineP13:
     jobs:
