@@ -46,6 +46,6 @@ workflows:
     jobs:
       - build-env
     jobs:
-      - pytest-flake8
+      - pytest-flake8 :
           requires:
-            - build-env
+            - build-env 
