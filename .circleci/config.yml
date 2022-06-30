@@ -23,7 +23,7 @@ jobs:
           command: |
             flake8
           name: Flake8
-  build_docker:
+  build_docker_and_publish_dockerhub:
     environment:
       IMAGE_NAME: litibe/p13_django
     docker:
@@ -34,15 +34,6 @@ jobs:
       - run:
           name: Build Docker image
           command: docker build -t $IMAGE_NAME:latest . 
-  publish-latest_dockerhub:
-    environment:
-      IMAGE_NAME: litibe/p13_django
-    docker:
-      - image: circleci/buildpack-deps:stretch
-    steps:
-      - setup_remote_docker
-      - run:
-          name: Publish Docker Image to Docker Hub
           command: |
             docker login -u "$DOCKER_HUB_USER_ID" -p "$DOCKER_HUB_PASSWORD"
             docker push $IMAGE_NAME:latest
@@ -50,15 +41,9 @@ workflows:
   PinelineP13:
     jobs:
       - env-tests
-      - build_docker:
+      - build_docker_and_publish_dockerhub:
           requires: 
             - env-tests
-          filters:
-            branches:
-              only: circleci-project-setup
-      - publish-latest_dockerhub:
-          requires: 
-            - build_docker
           filters:
             branches:
               only: circleci-project-setup
