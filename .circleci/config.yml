@@ -64,12 +64,8 @@ jobs:
             docker push $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$IMAGE_TAG
   deploy_heroku: 
-    executor: python/default
-    steps:
-      - attach_workspace:
-          at: .
-      - heroku/deploy-via-git:
-          force: true
+    jobs:
+      - heroku/deploy-via-git
 workflows:
   PinelineP13:
     jobs:
