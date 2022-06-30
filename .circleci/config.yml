@@ -15,26 +15,32 @@ orbs:
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   build-env: 
+    working_directory: ~/P13
     docker:
       - image: cimg/python:3.10.2
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
-          # app-dir: ~/project/package-directory/  # If you're requirements.txt isn't in the root directory.
-          # pip-dependency-file: test-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
-      - persist_to_workspace:
-          root: .     # relative path to our working directory
-          paths:      # file globs which will be persisted to the workspace
-           - rand_*
+      - run:
+          name: Install dependencies
+          command: |
+            ls -l
+            python3 -m venv venv
+            . venv/bin/activate
+            pip3 install -r requirements.txt
+
   pytest: 
+    working_directory: ~/P13
     docker:
       - image: cimg/python:3.10.2
     steps:
-      - attach_workspace:
-          at: .
+      - checkout:
+          path: ~/P13
       - run:
-          command: pytest
+          name: Install dependencies
+          command: |
+            ls -l
+            . venv/bin/activate
+            pytest
 
 
 # Invoke jobs via workflows
