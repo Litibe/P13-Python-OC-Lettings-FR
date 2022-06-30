@@ -36,28 +36,18 @@ jobs:
           at: ~/project
       - checkout
       - run:
+          command: - cache restore
+          command: - pip install --cache-dir .pip_cache -r requirements.txt
           command: pytest
 
-  flake: 
-    docker:
-      - image: cimg/python:3.10.2
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - checkout
-      - run:
-          command: flake8
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  PinePline: # This is the name of the workflow, feel free to change it to better match your workflow.
+  PinePlineP13: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-env
       - pytest:
           requires:
             - build-env 
-      - flake:
-          requires:
-            - build-env
