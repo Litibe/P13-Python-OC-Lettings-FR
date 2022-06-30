@@ -79,13 +79,13 @@ workflows:
             - env-tests
           filters:
             branches:
-              only: develop, master
+              only: ["develop", "master"]
       - publish_dockerhub:
           requires: 
             - build_docker
           filters:
             branches:
-              only: develop, master
+              only: ["develop", "master"]
       - deploy_heroku:
           requires:
             - publish_dockerhub
