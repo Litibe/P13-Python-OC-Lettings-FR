@@ -34,8 +34,6 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          command: pwd
-          command: ls
           command: pytest
 
 
