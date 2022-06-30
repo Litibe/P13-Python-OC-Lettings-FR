@@ -66,6 +66,7 @@ jobs:
   deploy_heroku: 
     executor: heroku/default
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - heroku/deploy-via-git
