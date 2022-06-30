@@ -33,6 +33,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
+      - checkout
       - run:
           name: Run tests
           command: pytest
@@ -46,6 +47,6 @@ workflows:
     jobs:
       - build-env
     jobs:
-      - pytest-flake8 :
+      - pytest-flake8:
           requires:
             - build-env 
