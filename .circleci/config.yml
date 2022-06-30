@@ -27,7 +27,7 @@ jobs:
     environment:
       IMAGE_NAME: litibe/p13_django
     docker:
-      - image: circleci/p13_django:stretch
+      - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - setup_remote_docker
@@ -36,9 +36,9 @@ jobs:
           command: docker build -t $IMAGE_NAME:latest . 
   publish-latest_dockerhub:
     environment:
-      IMAGE_NAME: building-on-ci
+      IMAGE_NAME: p13_django
     docker:
-      - image: circleci/p13_django:stretch
+      - image: circleci/buildpack-deps:stretch
     steps:
       - setup_remote_docker
       - run:
