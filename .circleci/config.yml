@@ -53,10 +53,10 @@ workflows:
       - build_docker:
           filters:
             branches:
-              only: master
+              only: circleci-project-setup
       - publish-latest_dockerhub:
           requires: 
             - build_docker
           filters:
             branches:
-              only: master
+              only: circleci-project-setup
