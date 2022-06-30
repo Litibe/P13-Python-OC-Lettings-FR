@@ -79,16 +79,16 @@ workflows:
             - env-tests
           filters:
             branches:
-              only: circleci-project-setup
+              only: develop, main
       - publish_dockerhub:
           requires: 
             - build_docker
           filters:
             branches:
-              only: circleci-project-setup
+              only: develop, main
       - deploy_heroku:
           requires:
             - publish_dockerhub
           filters:
             branches:
-              only: circleci-project-setup
+              only: master, main
