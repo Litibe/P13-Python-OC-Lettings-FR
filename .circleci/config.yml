@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASS"
+            docker login -u "$DOCKER_HUB_USER_ID" -p "$DOCKER_HUB_PASSWORD"
             docker push $IMAGE_NAME:latest
 workflows:
   PinelineP13:
