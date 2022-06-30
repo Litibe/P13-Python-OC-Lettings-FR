@@ -26,7 +26,7 @@ jobs:
           paths: [.]
 
   pytest: 
-    working_directory: ~/P13
+    working_directory: ~/project
     docker:
       - image: cimg/python:3.10.2
     steps:
