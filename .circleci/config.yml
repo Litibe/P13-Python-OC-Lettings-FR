@@ -36,7 +36,7 @@ jobs:
           command: docker build -t $IMAGE_NAME:latest . 
   publish-latest_dockerhub:
     environment:
-      IMAGE_NAME: p13_django
+      IMAGE_NAME: litibe/p13_django
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
