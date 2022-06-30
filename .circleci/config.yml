@@ -1,21 +1,26 @@
-version: 2
+version: '2.1'
 orbs:
-  python: circleci/python@3.10.4
+  python: circleci/python@2.0.3
 jobs:
-  env-and-tests:
-    docker:
-      - image: circleci/python:3.10.4
+  env-tests:
+    executor: python/default
     steps:
-     - checkout
+      - checkout
       - python/install-packages:
           pkg-manager: pip
+      - python/install-packages:
+          pip-dependency-file: requirements.txt
+          pkg-manager: pip
+      - python/install-packages:
+          args: pytest
+          pkg-manager: pip
+          pypi-cache: false
       - run:
-          name: Run tests
-          command: pytest
-      - run:
-          name: Run flake8
-          command: flake8
+          command: |
+            pytest --version
+          name: Test
 workflows:
-  PineplineP13:
+  PinelineP13:
     jobs:
-      - env-and-tests
+      - env-tests
+
