@@ -28,7 +28,7 @@ jobs:
           paths:
             - .
 
-  pytest-flake8: 
+  pytest: 
     docker:
       - image: cimg/python:3.10.2
     steps:
@@ -36,8 +36,16 @@ jobs:
           at: ~/project
       - checkout
       - run:
-          name: Run tests
           command: pytest
+
+  flake: 
+    docker:
+      - image: cimg/python:3.10.2
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - checkout
+      - run:
           command: flake8
 
 # Invoke jobs via workflows
@@ -47,6 +55,9 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-env
-      - pytest-flake8:
+      - pytest:
           requires:
             - build-env 
+      - flake:
+          requires:
+            - build-env
