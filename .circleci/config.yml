@@ -39,7 +39,6 @@ jobs:
           name: Install dependencies
           command: |
             ls -l
-            . venv/bin/activate
             pytest
 
 
