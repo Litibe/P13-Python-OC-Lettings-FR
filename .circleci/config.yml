@@ -27,6 +27,7 @@ jobs:
           root: ~/project
           paths:
             - .
+
   pytest-flake8: 
     docker:
       - image: cimg/python:3.10.2
@@ -45,7 +46,6 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-env
-    jobs:
       - pytest-flake8:
           requires:
             - build-env 
