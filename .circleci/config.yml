@@ -67,7 +67,7 @@ jobs:
     executor: python/default
     steps:
       - attach_workspace:
-          at: ~/project
+          at: .
       - heroku/deploy-via-git:
           force: true
 workflows:
