@@ -51,6 +51,8 @@ workflows:
     jobs:
       - env-tests
       - build_docker:
+        requires: 
+            - env-tests
           filters:
             branches:
               only: circleci-project-setup
