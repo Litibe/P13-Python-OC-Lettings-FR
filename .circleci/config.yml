@@ -35,7 +35,6 @@ jobs:
           at: ~/project
       - checkout
       - run:
-          name: Run tests
           command: pytest
           command: flake8
 
