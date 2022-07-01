@@ -115,7 +115,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR.joinpath('media/')
 MEDIA_URL = '/media/'
 
-if DEBUG != True:
+if DEBUG is not True:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     # Static files settings
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
