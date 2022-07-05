@@ -11,7 +11,7 @@ dictum lacus d
 def index(request):
     profiles_list = Profile.objects.all()
     context = {'profiles_list': profiles_list}
-    return render(request, 'profiles/_index.html', context)
+    return render(request, 'profiles/index.html', context)
 
 
 """Aliquam sed metus eget nisi tincidunt ornare accumsan eget lac
