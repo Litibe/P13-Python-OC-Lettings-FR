@@ -10,6 +10,7 @@ admin.site.index_title = "Welcome to Orange Country Lettings"
 
 def trigger_error(request):
     division_by_zero = 1 / 0
+    return division_by_zero
 
 
 urlpatterns = [
