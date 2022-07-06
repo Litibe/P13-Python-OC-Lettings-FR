@@ -4,21 +4,19 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Initialise environment variables
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = os.environ.get('DEBUG', False)
+if DEBUG is False:
+    os.environ["SECRET_KEY"] = env("SECRET_KEY")
+    os.environ['SENTRY_SDK'] = env('SENTRY_SDK')
+    os.environ['DATABASE_NAME'] = env('DATABASE_NAME')
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0',
                  'oc-lettings-p13-lt.herokuapp.com']
@@ -74,7 +72,7 @@ WSGI_APPLICATION = 'oc_lettings_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, env("DATABASE_NAME")),
+        'NAME': os.path.join(BASE_DIR, os.environ.get("DATABASE_NAME", "base.sqlite3")),
     }
 }
 
@@ -121,7 +119,7 @@ MEDIA_URL = '/media/'
 
 
 sentry_sdk.init(
-    dsn=env('SENTRY_SDK'),
+    dsn=os.environ.get('SENTRY_SDK'),
     integrations=[
         DjangoIntegration(),
     ],

@@ -32,17 +32,16 @@ jobs:
     executor: docker-publisher
     environment:
       IMAGE_NAME: litibe/p13_django
-      SECRET_KEY: $SECRET_KEY
-      DEBUG: $DEBUG
-      DATABASE_NAME: $DATABASE_NAME
-      SENTRY_SDK: $SENTRY_SDK
+      - SECRET_KEY=$SECRET_KEY
+      - DEBUG=$DEBUG
+      - DATABASE_NAME=$DATABASE_NAME
+      - SENTRY_SDK=$SENTRY_SDK
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build Docker image
           command: |
-            echo $DATABASE_NAME
             docker build -t $IMAGE_NAME:latest .
       - run:
           name: Publish Docker Image to Docker Hub
