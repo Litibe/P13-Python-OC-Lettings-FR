@@ -6,10 +6,10 @@ executors:
   docker-publisher:
     environment:
       IMAGE_NAME: litibe/p13_django
-      SECRET_KEY: $SECRET_KEY
-      DEBUG: $DEBUG
-      DATABASE_NAME: $DATABASE_NAME
-      SENTRY_SDK: $SENTRY_SDK
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG}
+      DATABASE_NAME: ${DATABASE_NAME}
+      SENTRY_SDK: ${SENTRY_SDK}
     docker:
       - image: circleci/buildpack-deps
 jobs:
