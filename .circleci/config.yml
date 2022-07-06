@@ -4,12 +4,6 @@ orbs:
   heroku: circleci/heroku@1.2.6
 executors:
   docker-publisher:
-    environment:
-      IMAGE_NAME: litibe/p13_django
-      SECRET_KEY: ${SECRET_KEY}
-      DEBUG: ${DEBUG}
-      DATABASE_NAME: ${DATABASE_NAME}
-      SENTRY_SDK: ${SENTRY_SDK}
     docker:
       - image: circleci/buildpack-deps
 jobs:
@@ -36,6 +30,12 @@ jobs:
           name: Flake8
   build_docker_and_push_to_hub:
     executor: docker-publisher
+    environment:
+      IMAGE_NAME: litibe/p13_django
+      SECRET_KEY: $SECRET_KEY
+      DEBUG: $DEBUG
+      DATABASE_NAME: $DATABASE_NAME
+      SENTRY_SDK: $SENTRY_SDK
     steps:
       - checkout
       - setup_remote_docker
