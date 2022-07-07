@@ -31,11 +31,11 @@ jobs:
   build_docker_and_push_to_hub:
     executor: docker-publisher
     environment:
-      - IMAGE_NAME=litibe/p13_django
-      - SECRET_KEY=$SECRET_KEY
-      - DEBUG=$DEBUG
-      - DATABASE_NAME=$DATABASE_NAME
-      - SENTRY_SDK=$SENTRY_SDK
+      IMAGE_NAME: litibe/p13_django
+      SECRET_KEY: $SECRET_KEY
+      DEBUG: $DEBUG
+      DATABASE_NAME: $DATABASE_NAME
+      SENTRY_SDK: $SENTRY_SDK
     steps:
       - checkout
       - setup_remote_docker
