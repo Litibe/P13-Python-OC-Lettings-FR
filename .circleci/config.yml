@@ -64,7 +64,10 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - heroku/deploy-via-git config:set DISABLE_COLLECTSTATIC=1
+      - heroku/python
+      - heroku config:unset DISABLE_COLLECTSTATIC
+      - git push heroku master
+
 workflows:
   PinelineP13:
     jobs:
