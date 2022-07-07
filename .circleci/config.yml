@@ -26,6 +26,16 @@ jobs:
             . venv/bin/activate
             flake8
           name: Flake8
+      - run:
+          name: create .env 
+          command: |
+            (echo SECRET_KEY=${SECRET_KEY} 
+            echo DEBUG=${DEBUG} 
+            echo DATABASE_NAME=${DATABASE_NAME} 
+            echo SENTRY_SDK=${SENTRY_SDK} 
+            ) >> .env 
+      - run:
+          command: python manage.py check --deploy
   build_docker_and_push_to_hub:
     executor: docker-publisher
     environment:

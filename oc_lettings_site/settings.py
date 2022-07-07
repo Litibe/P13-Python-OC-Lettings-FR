@@ -9,7 +9,6 @@ load_dotenv()
 DEBUG = os.environ['DEBUG']
 SECRET_KEY = os.environ['SECRET_KEY']
 
-
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0',
                  'oc-lettings-p13-lt.herokuapp.com']
 
@@ -108,3 +107,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+if DEBUG is False:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
