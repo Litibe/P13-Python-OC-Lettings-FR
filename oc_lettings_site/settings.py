@@ -8,8 +8,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', False)
-SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG', os.environ['DEBUG'])
+SECRET_KEY = os.getenv('SECRET_KEY', os.environ['SECRET_KEY'])
 
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0',
@@ -66,7 +66,7 @@ WSGI_APPLICATION = 'oc_lettings_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, os.getenv("DATABASE_NAME", "base.sqlite3")),
+        'NAME': os.path.join(BASE_DIR, os.getenv("DATABASE_NAME", os.environ['DATABASE_NAME'])),
     }
 }
 
@@ -113,7 +113,7 @@ MEDIA_URL = '/media/'
 
 
 sentry_sdk.init(
-    dsn=os.getenv('SENTRY_SDK'),
+    dsn=os.getenv('SENTRY_SDK', os.environ['SENTRY_SDK']),
     integrations=[
         DjangoIntegration(),
     ],
