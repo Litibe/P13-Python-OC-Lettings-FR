@@ -60,26 +60,11 @@ jobs:
             docker push $IMAGE_NAME:$IMAGE_TAG
   deploy_heroku: 
     executor: heroku/default
-    docker:
-      - image: cimg/base:2021.07
     steps:
       - checkout
       - attach_workspace:
           at: .
-      - setup_remote_docker
-      - run:
-          name : pull docker image from hub
-          command: |
-            docker pull litibe/p13_django:latest
-      - run:
-          name : Push Docker_image to Heroku
-          command : |
-            - heroku/install
-            - run: heroku container:login
-            - heroku/push-docker-image:
-                process-types: web
-            - heroku/release-docker-image:
-                process-types: web
+      - heroku/deploy-via-git
 workflows:
   PinelineP13:
     jobs:
