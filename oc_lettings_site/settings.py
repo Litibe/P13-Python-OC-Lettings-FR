@@ -1,21 +1,15 @@
 import os
-import environ
+from dotenv import load_dotenv
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+load_dotenv()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False)
-if DEBUG is False:
-    os.environ["SECRET_KEY"] = env("SECRET_KEY")
-    os.environ['SENTRY_SDK'] = env('SENTRY_SDK')
-    os.environ['DATABASE_NAME'] = env('DATABASE_NAME')
-
-SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.getenv('DEBUG', False)
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0',
@@ -72,7 +66,7 @@ WSGI_APPLICATION = 'oc_lettings_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, os.environ.get("DATABASE_NAME", "base.sqlite3")),
+        'NAME': os.path.join(BASE_DIR, os.getenv("DATABASE_NAME", "base.sqlite3")),
     }
 }
 
@@ -119,7 +113,7 @@ MEDIA_URL = '/media/'
 
 
 sentry_sdk.init(
-    dsn=os.environ.get('SENTRY_SDK'),
+    dsn=os.getenv('SENTRY_SDK'),
     integrations=[
         DjangoIntegration(),
     ],
