@@ -64,6 +64,20 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+      - run:
+          name: create .env 
+          command: |
+            echo SENTRY_SDK=${SENTRY_SDK}
+            (echo SECRET_KEY=${SECRET_KEY} 
+            echo DEBUG=${DEBUG} 
+            echo DATABASE_NAME=${DATABASE_NAME} 
+            echo SENTRY_SDK=${SENTRY_SDK} 
+            ) >> .env
+      - run:
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
       - heroku/deploy-via-git
 workflows:
   PinelineP13:
