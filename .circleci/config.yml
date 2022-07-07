@@ -35,7 +35,9 @@ jobs:
             echo SENTRY_SDK=${SENTRY_SDK} 
             ) >> .env 
       - run:
-          command: python manage.py check --deploy
+          command: |
+            . venv/bin/activate
+            python manage.py check --deploy
   build_docker_and_push_to_hub:
     executor: docker-publisher
     environment:
