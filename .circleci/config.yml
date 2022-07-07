@@ -49,6 +49,7 @@ jobs:
           name: Build Docker image
           command: |
             docker build -t $IMAGE_NAME:latest .
+            docker images
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
@@ -75,11 +76,19 @@ jobs:
             echo DEBUG=${DEBUG} 
             echo DATABASE_NAME=${DATABASE_NAME} 
             echo SENTRY_SDK=${SENTRY_SDK} 
-            ) >> .env 
+            ) >> .env
+      - run:
+          name: Storing previous commit
+          command: |
+            git rev-parse HEAD > ./commit.txt
+      - heroku/install
+      - setup_remote_docker
       - run:
           name: deploy heroku
           command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+            heroku container:login
+            heroku container:push web --arg DEBUG=${DEBUG} --arg DATABASE_NAME=${DATABASE_NAME} -a $HEROKU_APP_NAME
+            heroku container:release web -a $HEROKU_APP_NAME
 workflows:
   PinelineP13:
     jobs:
