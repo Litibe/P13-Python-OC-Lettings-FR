@@ -64,7 +64,6 @@ jobs:
       DEBUG: $DEBUG
       DATABASE_NAME: $DATABASE_NAME
       SENTRY_SDK: $SENTRY_SDK
-    working_directory: /tmp/heroku
     steps:
       - checkout
       - attach_workspace:
@@ -76,7 +75,7 @@ jobs:
             echo DEBUG=${DEBUG} 
             echo DATABASE_NAME=${DATABASE_NAME} 
             echo SENTRY_SDK=${SENTRY_SDK} 
-            ) >> /tmp/heroku/.env 
+            ) >> .env 
       - run:
           name: deploy heroku
           command: |
