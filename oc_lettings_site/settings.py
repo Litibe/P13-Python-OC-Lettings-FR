@@ -113,7 +113,7 @@ MEDIA_URL = '/media/'
 
 
 sentry_sdk.init(
-    dsn= os.environ['SENTRY_SDK'],
+    dsn=os.environ['SENTRY_SDK'],
     integrations=[
         DjangoIntegration(),
     ],
