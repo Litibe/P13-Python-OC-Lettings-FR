@@ -60,8 +60,22 @@ jobs:
             docker push $IMAGE_NAME:$IMAGE_TAG
   deploy_heroku: 
     executor: heroku/default
+    environment:
+      SECRET_KEY: $SECRET_KEY
+      DEBUG: $DEBUG
+      DATABASE_NAME: $DATABASE_NAME
+      SENTRY_SDK: $SENTRY_SDK
     steps:
       - checkout
+      - run:
+          name: create .env 
+          command: |
+            echo SENTRY_SDK=${SENTRY_SDK}
+            (echo SECRET_KEY=${SECRET_KEY} 
+            echo DEBUG=${DEBUG} 
+            echo DATABASE_NAME=${DATABASE_NAME} 
+            echo SENTRY_SDK=${SENTRY_SDK} 
+            ) >> .env 
       - attach_workspace:
           at: .
       - heroku/deploy-via-git
