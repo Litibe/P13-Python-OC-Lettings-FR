@@ -70,7 +70,7 @@ jobs:
       - run:
           name : pull docker image from hub
           command: |
-            docker pull litibe:$IMAGE_NAME:latest
+            docker pull litibe:p13_django:latest
       - run:
           name : Push Docker_image to Heroku
           command : |
