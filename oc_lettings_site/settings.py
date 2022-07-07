@@ -1,9 +1,11 @@
 import os
+from dotenv import load_dotenv
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG']
@@ -111,7 +113,7 @@ MEDIA_URL = '/media/'
 
 
 sentry_sdk.init(
-    dsn=os.environ['SENTRY_SDK'],
+    dsn= os.environ['SENTRY_SDK'],
     integrations=[
         DjangoIntegration(),
     ],

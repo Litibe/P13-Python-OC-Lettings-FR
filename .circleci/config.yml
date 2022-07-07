@@ -45,7 +45,10 @@ jobs:
             echo DATABASE_NAME=${DATABASE_NAME} 
             echo SENTRY_SDK=${SENTRY_SDK} 
             ) >> .env 
-
+      - run:
+          name: check list files
+          command: |
+            echo ls
       - run:
           name: Build Docker image
           command: |
