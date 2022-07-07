@@ -65,13 +65,9 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name : deploy heroku oc-lettings-p13-lt
+          name : deploy master on heroku oc-lettings-p13-lt
           command: |
-          heroku create oc-lettings-p13-lt
-          heroku config:set DISABLE_COLLECTSTATIC
-          git push heroku master
-          heroku run python manage.py deploy
-          heroku restart
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 workflows:
   PinelineP13:
     jobs:
