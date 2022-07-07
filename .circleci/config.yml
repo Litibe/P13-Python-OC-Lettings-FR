@@ -64,18 +64,23 @@ jobs:
       DEBUG: $DEBUG
       DATABASE_NAME: $DATABASE_NAME
       SENTRY_SDK: $SENTRY_SDK
+    working_directory: /tmp/heroku
     steps:
       - checkout
       - attach_workspace:
           at: .
       - run:
-          name: Add .env variables for heroku
+          name: create .env 
           command: |
-            heroku config:set SENTRY_SDK=${SENTRY_SDK}
-            heroku config:set SECRET_KEY=${SECRET_KEY} 
-            heroku config:set DEBUG=${DEBUG} 
-            heroku config:set DATABASE_NAME=${DATABASE_NAME} 
-      - heroku/deploy-via-git
+            (echo SECRET_KEY=${SECRET_KEY} 
+            echo DEBUG=${DEBUG} 
+            echo DATABASE_NAME=${DATABASE_NAME} 
+            echo SENTRY_SDK=${SENTRY_SDK} 
+            ) >> /tmp/heroku/.env 
+      - run:
+          name: deploy heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 workflows:
   PinelineP13:
     jobs:
