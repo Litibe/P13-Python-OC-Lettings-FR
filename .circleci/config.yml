@@ -40,18 +40,13 @@ jobs:
       - run:
           name: create .env 
           command: |
-          if .env 
-          then
-              echo "Mon fichier existe"
-          else
-              Del /Q .env
-              for %%a in ( 
-              SECRET_KEY=${SECRET_KEY} 
-              DEBUG=${DEBUG} 
-              DATABASE_NAME=${DATABASE_NAME} 
-              SENTRY_SDK=${SENTRY_SDK} 
-              ) do echo %%a >> .env 
-              pause 
+            Del /Q .env
+            for %%a in ( 
+            SECRET_KEY=${SECRET_KEY} 
+            DEBUG=${DEBUG} 
+            DATABASE_NAME=${DATABASE_NAME} 
+            SENTRY_SDK=${SENTRY_SDK} 
+            ) do echo %%a >> .env 
 
       - run:
           name: Build Docker image
