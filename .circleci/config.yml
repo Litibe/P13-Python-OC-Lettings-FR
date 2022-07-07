@@ -40,13 +40,11 @@ jobs:
       - run:
           name: create .env 
           command: |
-            Del /Q .env
-            for %%a in ( 
-            SECRET_KEY=${SECRET_KEY} 
-            DEBUG=${DEBUG} 
-            DATABASE_NAME=${DATABASE_NAME} 
-            SENTRY_SDK=${SENTRY_SDK} 
-            ) do echo %%a >> .env 
+            (echo SECRET_KEY=${SECRET_KEY} 
+            echo DEBUG=${DEBUG} 
+            echo DATABASE_NAME=${DATABASE_NAME} 
+            echo SENTRY_SDK=${SENTRY_SDK} 
+            ) >> .env 
 
       - run:
           name: Build Docker image
