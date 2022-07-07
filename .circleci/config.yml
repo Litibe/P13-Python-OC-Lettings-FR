@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t $IMAGE_NAME:latest .
+            docker build -t $IMAGE_NAME:latest . -e SECRET_KEY -e DEBUG -e DATABASE_NAME -e SENTRY_SDK
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
