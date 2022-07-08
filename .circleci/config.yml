@@ -96,16 +96,22 @@ jobs:
       - heroku/install
       - setup_remote_docker
       - run:
+          name : create app Heroku if not exist
+          command : |
+            set -e
+            heroku container:login
+      - run:
           name: deploy heroku
           command: |
-            heroku container:login
-            heroku create $HEROKU_APP_NAME
             heroku config:set SECRET_KEY=${SECRET_KEY}
             heroku config:set SENTRY_SDK=${SENTRY_SDK}
             heroku config:set DEBUG=${DEBUG}
             heroku config:set DATABASE_NAME=${DATABASE_NAME}
             heroku container:push web -a $HEROKU_APP_NAME
             heroku container:release web -a $HEROKU_APP_NAME
+      - run:
+          name: Run app heroku
+          command : |
             heroku run bash -a $HEROKU_APP_NAME
 workflows:
   PinelineP13:
