@@ -29,10 +29,10 @@ jobs:
       - run:
           name: create .env 
           command: |
-            (echo SECRET_KEY=${SECRET_KEY} 
-            echo DEBUG=${DEBUG} 
-            echo DATABASE_NAME=${DATABASE_NAME} 
-            echo SENTRY_SDK=${SENTRY_SDK} 
+            (echo SECRET_KEY=$SECRET_KEY
+            echo DEBUG=$DEBUG
+            echo DATABASE_NAME=$DATABASE_NAME
+            echo SENTRY_SDK=$SENTRY_SDK
             ) >> .env 
       - run:
           command: |
@@ -52,10 +52,10 @@ jobs:
       - run:
           name: create .env 
           command: |
-            (echo SECRET_KEY=${SECRET_KEY} 
-            echo DEBUG=${DEBUG} 
-            echo DATABASE_NAME=${DATABASE_NAME} 
-            echo SENTRY_SDK=${SENTRY_SDK} 
+            (echo SECRET_KEY=$SECRET_KEY
+            echo DEBUG=$DEBUG
+            echo DATABASE_NAME=$DATABASE_NAME
+            echo SENTRY_SDK=$SENTRY_SDK
             ) >> .env 
       - run:
           name: Build Docker image
@@ -84,10 +84,10 @@ jobs:
       - run:
           name: create .env 
           command: |
-            (echo SECRET_KEY=${SECRET_KEY} 
-            echo DEBUG=${DEBUG} 
-            echo DATABASE_NAME=${DATABASE_NAME} 
-            echo SENTRY_SDK=${SENTRY_SDK} 
+            (echo SECRET_KEY=$SECRET_KEY
+            echo DEBUG=$DEBUG 
+            echo DATABASE_NAME=$DATABASE_NAME
+            echo SENTRY_SDK=$SENTRY_SDK
             ) >> .env
       - run:
           name: Storing previous commit
@@ -107,7 +107,7 @@ jobs:
           name: deploy heroku
           command: |
             heroku container:login
-            heroku container:push web --arg SECRET_KEY=${SECRET_KEY} --arg SENTRY_SDK=${SENTRY_SDK} --arg DEBUG=${DEBUG} --arg DATABASE_NAME=${DATABASE_NAME} -a $HEROKU_APP_NAME
+            heroku container:push web --arg SECRET_KEY=$SECRET_KEY --arg SENTRY_SDK=$SENTRY_SDK --arg DEBUG=$DEBUG --arg DATABASE_NAME=$DATABASE_NAME -a $HEROKU_APP_NAME
             heroku container:release web -a $HEROKU_APP_NAME
       - run:
           name: Run app heroku
