@@ -111,7 +111,7 @@ jobs:
       - run:
           name: install db into heroku
           command: | 
-            heroku run python manage.py loaddata db.json
+            heroku run python manage.py loaddata db.json -a $HEROKU_APP_NAME
 
 workflows:
   PinelineP13:
