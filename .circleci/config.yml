@@ -108,7 +108,14 @@ jobs:
             heroku config:set DATABASE_NAME=${DATABASE_NAME} -a $HEROKU_APP_NAME
             heroku config:set ENV=PRODUCTION -a $HEROKU_APP_NAME
       - heroku/deploy-via-git
-
+      - run:
+          name: make migration db
+          command: | 
+            heroku run python migrate -a $HEROKU_APP_NAME
+      - run:
+          name: install db into heroku
+          command: | 
+            heroku run python manage.py loaddata db.json -a $HEROKU_APP_NAME
 
 workflows:
   PinelineP13:
