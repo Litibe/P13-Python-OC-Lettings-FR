@@ -105,14 +105,14 @@ jobs:
             fi
       - run:
           name: deploy heroku
-          command: |
-            heroku container:login
-            heroku container:push web --arg SECRET_KEY=$SECRET_KEY --arg SENTRY_SDK=$SENTRY_SDK --arg DEBUG=$DEBUG --arg DATABASE_NAME=$DATABASE_NAME -a $HEROKU_APP_NAME
-            heroku container:release web -a $HEROKU_APP_NAME
+          command: | 
+            heroku git:remote -a $HEROKU_APP_NAME
             heroku config:set SECRET_KEY=$SECRET_KEY -a $HEROKU_APP_NAME
             heroku config:set SENTRY_SDK=$SENTRY_SDK -a $HEROKU_APP_NAME
             heroku config:set DEBUG=$DEBUG -a $HEROKU_APP_NAME
             heroku config:set DATABASE_NAME=$DATABASE_NAME -a $HEROKU_APP_NAME
+            git push heroku master
+
       - run:
           name: Run app heroku
           command : |
