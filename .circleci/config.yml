@@ -99,10 +99,11 @@ jobs:
           name : create app Heroku if not exist
           command : |
             set -e
-            heroku container:login
+            heroku create $HEROKU_APP_NAME
       - run:
           name: deploy heroku
           command: |
+            heroku container:login
             heroku config:set SECRET_KEY=${SECRET_KEY}
             heroku config:set SENTRY_SDK=${SENTRY_SDK}
             heroku config:set DEBUG=${DEBUG}
