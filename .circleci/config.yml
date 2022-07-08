@@ -29,6 +29,7 @@ jobs:
       - run:
           name : git status
           command : |
+            git init
             git status
       - run:
           name: create .env and db.json
