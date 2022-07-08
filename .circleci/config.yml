@@ -12,33 +12,21 @@ jobs:
     steps:
       - checkout
       - run:
+        name: Create venv and pip requirements
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
       - run:
+          name: Pytest
           command: |
             . venv/bin/activate
             pytest
-          name: Pytest
       - run:
+        name: Flake8
           command: |
             . venv/bin/activate
-            flake8
-          name: Flake8
-      - run:
-          name : git status
-          command : |
-            git status
-            git config --global user.email "lioneltissier@outlook.fr"
-            git config --global user.name "litibe"
-      - run:
-          name: create db.json
-          command: |
-            . venv/bin/activate
-            python manage.py dumpdata > db.json
-            git add db.json
-            git commit -m "db.json"
+            flake8    
       - run:
           name: manage.py check --deploy 
           command: |
@@ -80,14 +68,6 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: create .env 
-          command: |
-            (echo SECRET_KEY=$SECRET_KEY
-            echo DEBUG=$DEBUG 
-            echo DATABASE_NAME=$DATABASE_NAME
-            echo SENTRY_SDK=$SENTRY_SDK
-            ) >> .env
-      - run:
           name: Storing previous commit
           command: |
             git rev-parse HEAD > ./commit.txt
@@ -112,7 +92,7 @@ jobs:
       - run:
           name: make migration db
           command: | 
-            heroku run python migrate -a $HEROKU_APP_NAME
+            heroku run python manage.py migrate -a $HEROKU_APP_NAME
       - run:
           name: install db into heroku
           command: | 
