@@ -104,19 +104,14 @@ jobs:
                 echo "Heroku app $HEROKU_APP_NAME already created !"
             fi
       - run:
-          name: deploy heroku
+          name: deploy Condig Set Var Env heroku
           command: | 
-            heroku git:remote -a $HEROKU_APP_NAME
             heroku config:set SECRET_KEY=$SECRET_KEY -a $HEROKU_APP_NAME
             heroku config:set SENTRY_SDK=$SENTRY_SDK -a $HEROKU_APP_NAME
             heroku config:set DEBUG=$DEBUG -a $HEROKU_APP_NAME
             heroku config:set DATABASE_NAME=$DATABASE_NAME -a $HEROKU_APP_NAME
-            git push https://git@heroku.com:$HEROKU_APP_NAME.git master:master
+      - heroku/deploy-via-git
 
-      - run:
-          name: Run app heroku
-          command : |
-            heroku run bash -a $HEROKU_APP_NAME
 workflows:
   PinelineP13:
     jobs:
