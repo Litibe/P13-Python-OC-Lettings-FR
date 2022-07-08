@@ -72,11 +72,6 @@ jobs:
             docker push $IMAGE_NAME:$IMAGE_TAG
   deploy_heroku: 
     executor: heroku/default
-    environment:
-      SECRET_KEY: $SECRET_KEY
-      DEBUG: $DEBUG
-      DATABASE_NAME: $DATABASE_NAME
-      SENTRY_SDK: $SENTRY_SDK
     steps:
       - checkout
       - attach_workspace:
@@ -94,7 +89,6 @@ jobs:
           command: |
             git rev-parse HEAD > ./commit.txt
       - heroku/install
-      - setup_remote_docker
       - run:
           name : create app Heroku if not exist
           command : |
@@ -106,11 +100,19 @@ jobs:
       - run:
           name: deploy Condig Set Var Env heroku
           command: | 
-            heroku config:set SECRET_KEY=$SECRET_KEY -a $HEROKU_APP_NAME
-            heroku config:set SENTRY_SDK=$SENTRY_SDK -a $HEROKU_APP_NAME
-            heroku config:set DEBUG=$DEBUG -a $HEROKU_APP_NAME
-            heroku config:set DATABASE_NAME=$DATABASE_NAME -a $HEROKU_APP_NAME
+            . venv/bin/activate
+            python manage.py dumpdata > db.json
+            heroku config:set SECRET_KEY=${SECRET_KEY} -a $HEROKU_APP_NAME
+            heroku config:set SENTRY_SDK=${SENTRY_SDK} -a $HEROKU_APP_NAME
+            heroku config:set DEBUG=${DEBUG} -a $HEROKU_APP_NAME
+            heroku config:set DATABASE_NAME=${DATABASE_NAME} -a $HEROKU_APP_NAME
+            heroku config:set ENV=PRODUCTION -a $HEROKU_APP_NAME
       - heroku/deploy-via-git
+      - run:
+          name: install db into heroku
+          command: | 
+            . venv/bin/activate
+            heroku run python manage.py loaddata db.json
 
 workflows:
   PinelineP13:

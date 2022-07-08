@@ -1,12 +1,13 @@
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG']
+DEBUG = int(os.environ['DEBUG'])
 SECRET_KEY = os.environ['SECRET_KEY']
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0',
@@ -66,6 +67,9 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, os.environ['DATABASE_NAME'])
     }
 }
+if os.environ.get('ENV') == 'PRODUCTION':
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
