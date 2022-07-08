@@ -29,21 +29,14 @@ jobs:
       - run:
           name : git status
           command : |
-            git init
             git status
       - run:
-          name: create .env and db.json
+          name: create db.json
           command: |
-            (echo SECRET_KEY=$SECRET_KEY
-            echo DEBUG=$DEBUG
-            echo DATABASE_NAME=$DATABASE_NAME
-            echo SENTRY_SDK=$SENTRY_SDK
-            ) >> .env 
             . venv/bin/activate
             python manage.py dumpdata > db.json
-            git add .env
             git add db.json
-            git commit -m ".env and db.json"
+            git commit -m "db.json"
       - run:
           name: manage.py check --deploy 
           command: |
