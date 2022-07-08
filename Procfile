@@ -1,5 +1,1 @@
-build:
-  docker:
-    web: Dockerfile
-run:
-  web: gunicorn oc_lettings_site.wsgi:application --host=0.0.0.0 --port=${PORT}
+web: gunicorn oc_lettings_site.wsgi:application --bind 0.0.0.0:8000

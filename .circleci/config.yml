@@ -99,8 +99,14 @@ jobs:
           name: deploy heroku
           command: |
             heroku container:login
-            heroku container:push web --arg SECRET_KEY=${SECRET_KEY} --arg SENTRY_SDK=${SENTRY_SDK} --arg DEBUG=${DEBUG} --arg DATABASE_NAME=${DATABASE_NAME} -a $HEROKU_APP_NAME
+            heroku create $HEROKU_APP_NAME
+            heroku config:set SECRET_KEY=${SECRET_KEY}
+            heroku config:set SENTRY_SDK=${SENTRY_SDK}
+            heroku config:set DEBUG=${DEBUG}
+            heroku config:set DATABASE_NAME=${DATABASE_NAME}
+            heroku container:push web -a $HEROKU_APP_NAME
             heroku container:release web -a $HEROKU_APP_NAME
+            heroku run bash -a $HEROKU_APP_NAME
 workflows:
   PinelineP13:
     jobs:

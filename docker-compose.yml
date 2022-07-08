@@ -1,0 +1,16 @@
+version: '3.6'
+
+services:
+  web:
+    build: .
+    # command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn oc_lettings_site.wsgi:application --bind 0.0.0.0:8000
+    expose:
+      - 8000
+    env_file: .env
+  nginx:
+    build: ./nginx
+    ports:
+      - 8000:80
+    depends_on:
+      - web
