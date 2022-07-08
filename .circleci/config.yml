@@ -30,6 +30,8 @@ jobs:
           name : git status
           command : |
             git status
+            git config --global user.email "lioneltissier@outlook.fr"
+            git config --global user.name "litibe"
       - run:
           name: create db.json
           command: |
