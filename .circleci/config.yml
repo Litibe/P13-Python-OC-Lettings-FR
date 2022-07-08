@@ -108,13 +108,9 @@ jobs:
             heroku config:set DATABASE_NAME=${DATABASE_NAME} -a $HEROKU_APP_NAME
             heroku config:set ENV=PRODUCTION -a $HEROKU_APP_NAME
       - heroku/deploy-via-git
-      - checkout
-      - attach_workspace:
-          at: .
       - run:
           name: install db into heroku
           command: | 
-            . venv/bin/activate
             heroku run python manage.py loaddata db.json
 
 workflows:
