@@ -98,8 +98,11 @@ jobs:
       - run:
           name : create app Heroku if not exist
           command : |
-            set -e
-            heroku create $HEROKU_APP_NAME
+            if [ "$(curl -sL -w '%{http_code}' http://$HEROKU_APP_NAME.herokuapp.com -o /dev/null)" = "404" ]; then
+                heroku create $HEROKU_APP_NAME
+            else
+                echo "Heroku app $HEROKU_APP_NAME already created !"
+            fi
       - run:
           name: deploy heroku
           command: |
