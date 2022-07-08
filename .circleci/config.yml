@@ -107,8 +107,7 @@ jobs:
           name: deploy heroku
           command: |
             heroku container:login
-            heroku config:set SECRET_KEY=${SECRET_KEY} SENTRY_SDK=${SENTRY_SDK} DEBUG=${DEBUG} DATABASE_NAME=${DATABASE_NAME}
-            heroku container:push web -a $HEROKU_APP_NAME
+            heroku container:push web --arg SECRET_KEY=${SECRET_KEY} --arg SENTRY_SDK=${SENTRY_SDK} --arg DEBUG=${DEBUG} --arg DATABASE_NAME=${DATABASE_NAME} -a $HEROKU_APP_NAME
             heroku container:release web -a $HEROKU_APP_NAME
       - run:
           name: Run app heroku
