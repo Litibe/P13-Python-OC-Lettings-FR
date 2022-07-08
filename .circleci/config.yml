@@ -29,10 +29,10 @@ jobs:
       - run:
           name: create .env 
           command: |
-            (echo SECRET_KEY=${SECRET_KEY}
-            echo DEBUG=${DEBUG}
-            echo DATABASE_NAME=${DATABASE_NAME}
-            echo SENTRY_SDK=${SENTRY_SDK}
+            (echo SECRET_KEY=$SECRET_KEY
+            echo DEBUG=$DEBUG
+            echo DATABASE_NAME=$DATABASE_NAME
+            echo SENTRY_SDK=$SENTRY_SDK
             ) >> .env 
       - run:
           command: |
@@ -42,20 +42,16 @@ jobs:
     executor: docker-publisher
     environment:
       IMAGE_NAME: litibe/p13_django
-      SECRET_KEY: ${SECRET_KEY}
-      DEBUG: ${DEBUG}
-      DATABASE_NAME: ${DATABASE_NAME}
-      SENTRY_SDK: ${SENTRY_SDK}
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: create .env 
           command: |
-            (echo SECRET_KEY=${SECRET_KEY}
-            echo DEBUG=${DEBUG}
-            echo DATABASE_NAME=${DATABASE_NAME}
-            echo SENTRY_SDK=${SENTRY_SDK}
+            (echo SECRET_KEY=$SECRET_KEY
+            echo DEBUG=$DEBUG
+            echo DATABASE_NAME=$DATABASE_NAME
+            echo SENTRY_SDK=$SENTRY_SDK
             ) >> .env 
       - run:
           name: Build Docker image
