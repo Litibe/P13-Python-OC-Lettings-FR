@@ -27,23 +27,28 @@ jobs:
             flake8
           name: Flake8
       - run:
-          name: create .env 
+          name : git status
+          command : |
+            git status
+      - run:
+          name: create .env and db.json
           command: |
             (echo SECRET_KEY=$SECRET_KEY
             echo DEBUG=$DEBUG
             echo DATABASE_NAME=$DATABASE_NAME
             echo SENTRY_SDK=$SENTRY_SDK
             ) >> .env 
+            . venv/bin/activate
+            python manage.py dumpdata > db.json
+            git add .env
+            git add db.json
+            git commit -m ".env and db.json"
       - run:
           name: manage.py check --deploy 
           command: |
             . venv/bin/activate
             python manage.py check --deploy
-      - run:
-          name: prepare db for heroku 
-          command: |
-            . venv/bin/activate
-            python manage.py dumpdata > db.json
+      
   build_docker_and_push_to_hub:
     executor: docker-publisher
     environment:
