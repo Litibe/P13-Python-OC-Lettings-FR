@@ -5,7 +5,7 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-load_dotenv()
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ['DEBUG'])
@@ -74,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'oc_lettings_site.wsgi.application'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
 # Database
@@ -85,7 +86,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, os.environ['DATABASE_NAME'])
     }
 }
-if os.environ.get('ENV') == 'PRODUCTION':
+if os.environ.get('ENV', "LOCAL") == 'PRODUCTION':
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
