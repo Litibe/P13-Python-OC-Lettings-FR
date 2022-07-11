@@ -13,6 +13,9 @@ def trigger_error(request):
     return division_by_zero
 
 
+handler404 = "oc_lettings_site.views.handler404"
+handler500 = "oc_lettings_site.views.handler500"
+
 urlpatterns = [
     path('', views.index, name='oc_lettings_site_index'),
     path('admin/', admin.site.urls),
