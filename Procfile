@@ -1,1 +1,0 @@
-web: waitress-serve --port=$PORT oc_lettings_site.wsgi:application
