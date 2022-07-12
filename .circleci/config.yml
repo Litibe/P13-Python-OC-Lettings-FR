@@ -2,6 +2,7 @@ version: '2.1'
 orbs:
   python: circleci/python@2.0.3
   heroku: circleci/heroku@1.2.6
+  slack: circleci/slack@4.10.1
 executors:
   docker-publisher:
     docker:
@@ -37,7 +38,14 @@ jobs:
           command: |
             . venv/bin/activate
             python manage.py check --deploy
-      
+      # In the event the deployment has failed, alert the engineering team
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+       # When there is a successful deployment, send a notification with a different template.
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
   build_docker_and_push_to_hub:
     executor: docker-publisher
     environment:
