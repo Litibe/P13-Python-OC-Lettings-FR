@@ -72,10 +72,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: Storing previous commit
-          command: |
-            git rev-parse HEAD > ./commit.txt
       - heroku/install
       - run:
           name : create app Heroku if not exist

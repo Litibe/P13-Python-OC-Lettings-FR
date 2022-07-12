@@ -9,7 +9,8 @@ Site web d'Orange County Lettings
 - Compte GitHub avec accès en lecture à ce repository
 - Git CLI
 - SQLite3 CLI
-- Interpréteur Python, version 3.6 ou supérieure
+- [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+   [![Python badge](https://img.shields.io/badge/Python->=3.9-blue.svg)](https://www.python.org/)
 
 Dans le reste de la documentation sur le développement local, il est supposé que la commande `python` de votre OS shell exécute l'interpréteur Python ci-dessus (à moins qu'un environnement virtuel ne soit activé).
 
@@ -18,7 +19,7 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 #### Cloner le repository
 
 - `cd /path/to/put/project/in`
-- `git clone https://github.com/OpenClassrooms-Student-Center/Python-OC-Lettings-FR.git`
+- `git clone https://github.com/Litibe/P13-Python-OC-Lettings-FR.git`
 
 #### Créer l'environnement virtuel
 
@@ -75,3 +76,85 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+## Lancement du projet en local - DOCKER 
+Si vous décirez simplement utiliser le site en local sans modification du code source, un container Docker est présent sur le dockerHub pour une installation automatisée des dépendances ainsi qu'un lancement automatique en une ligne de commande.
+
+### Pré-requis : 
+  - Installation de Docker sur votre machine : 
+    - [Pour Mac](https://www.docker.com/products/docker-desktop/)
+    - [Pour Windows](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=header)
+    - [Pour Linux](https://docs.docker.com/desktop/linux/install/)
+
+### Lancement du script de récupération du Container avec lancement :
+Attention votre application Docker doit être lancée sur votre machine puis ouvrer votre terminal.
+  ```shell
+   docker run -d -p 80:8000 litibe/p13_django
+   ```
+   Docker va : 
+   - Télécharger l'image du container issue du [Docker Hub - litibe/p13_django](https://hub.docker.com/r/litibe/p13_django/tags) si l'image est non présente/correspondante à votre image présente en locale sur votre machine.
+   - Exécuter le script en mode "détach", votre application Docker gère l'application plutôt que votre terminal lançant le script
+   - Connecter le port 80 de votre navigateur au port 8000 du serveur Django présent dans le container
+   - Aller sur `http://localhost` ou `http://127.0.0.1`
+   - Connectez-vous avec l'utilisateur `admin`, mot de passe `Abc1234!` sur sur `http://localhost/admin/` ou `http://127.0.0.1/admin/`
+
+NB : Est présent sur le DockerHub, la dernière image compilée et présente sur le site de production.
+
+## DEPLOIEMENT - CIRCLECI
+### Pré-requis :
+Est présent à la racine du projet : 
+  - .circleci/config.yml (fichier de gestion du pipeline CircleCi)
+  - .env (fichier contenant les variables d'environnement)
+  - db.json (fichier contenant une copie de la base de données pour migration sur Héroku)
+  - Dockerfile (fichier permettant la compilation du projet dans un container Docker)
+  - Procfile (fichier nécessaire pour le lancement du serveur sur Heroku)
+
+### Variable d'environnement :
+A des fins de confidentialités, les données sensibles ne sont présentes dans les fichiers sources du projet.
+Pour un usage local, vous devez continuer votre fichier .env avec les variables suivantes : 
+  - SECRET_KEY
+  - DEBUG
+  - DATABASE_NAME
+  - SENTRY_SDK
+
+Pour CircleCI, dans la configuration du projet :
+
+  Même chose de ci-dessus pour le fonctionnement de Django :
+  - SECRET_KEY
+  - DEBUG
+  - DATABASE_NAME
+  - SENTRY_SDK
+
+  Pour la compilation Docker : 
+  - CIRCLE_BUILD_NUM : un numero de votre choix de départ pour l'identation des N° de version pour le image_docker:0.0.CIRCLE_BUILD_NUM
+  - DOCKER_HUB_USER_ID (code plateforme docker hub pour le stockage de l'image container)
+  - DOCKER_HUB_PASSWORD
+
+  Pour le deploiement sur HEROKU
+  - HEROKU_API_KEY - clé authentification API pour le push sur le serveur Heroku
+  - HEROKU_APP_NAME - nom de l'application accessible via : https://HEROKU_APP_NAME.herokuapp.com
+
+  Pour les notifications sur SLACK - Facultatif
+  - SLACK_ACCESS_TOKEN  - recevoir un message si deploiement ok ou en echec sur Slack
+  - SLACK_DEFAULT_CHANNEL  - recevoir un message si deploiement ok ou en echec sur Slack
+
+  ### Procédure réalisé par CircleCI
+  - ENV-TESTS
+    - Create venv and pip requirements
+    - Collect static to improve warning whitenoise in pytest
+    - Pytest
+    - Flake8
+    - manage.py check --deploy
+  
+  - BUILD_DOCKER_AND_PUSH_TO_HUB
+    - create .env for integration into container
+    - Build Docker image
+    - Publish Docker Image to Docker Hub - IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
+
+  - DEPLOY HEROKU
+    - heroku/install - install dependance pour commande Heroku distancielle
+    - create app Heroku if not exist (wait 2 min after deleted an app !)
+    - Set Var Env into heroku
+    - heroku/deploy-via-git
+    - make migration db
+    - install db into heroku
