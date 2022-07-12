@@ -89,9 +89,7 @@ DATABASES = {
 if os.environ.get('ENV', "LOCAL") == 'PRODUCTION':
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
-    #CSRF_COOKIE_SECURE = True
-    #SESSION_COOKIE_SECURE = True
-    #SECURE_SSL_REDIRECT = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
