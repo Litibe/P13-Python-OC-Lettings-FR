@@ -38,14 +38,6 @@ jobs:
           command: |
             . venv/bin/activate
             python manage.py check --deploy
-      # In the event the deployment has failed, alert the engineering team
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-       # When there is a successful deployment, send a notification with a different template.
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
   build_docker_and_push_to_hub:
     executor: docker-publisher
     environment:
@@ -110,6 +102,14 @@ jobs:
           name: install db into heroku
           command: | 
             heroku run python manage.py loaddata db.json -a $HEROKU_APP_NAME
+      # In the event the deployment has failed, alert the engineering team
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+       # When there is a successful deployment, send a notification with a different template.
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
 workflows:
   PinelineP13:
