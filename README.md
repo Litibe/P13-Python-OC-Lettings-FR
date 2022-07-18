@@ -138,13 +138,13 @@ Pour CircleCI, dans la configuration du projet :
   - SLACK_ACCESS_TOKEN  - recevoir un message si deploiement ok ou en echec sur Slack
   - SLACK_DEFAULT_CHANNEL  - recevoir un message si deploiement ok ou en echec sur Slack
 
-  ### Procédure réalisé par CircleCI
+  ### Procédure réalisée par CircleCI - Pipeline
   - ENV-TESTS
     - Create venv and pip requirements
     - Collect static to improve warning whitenoise in pytest
     - Pytest
     - Flake8
-    - manage.py check --deploy
+    - manage.py check --deploy (facultatif, mais obtient les optimisations à faire sur le serveur suite à l'installation d'un certificat SSL principalement)
   
   - BUILD_DOCKER_AND_PUSH_TO_HUB
     - create .env for integration into container
@@ -152,9 +152,19 @@ Pour CircleCI, dans la configuration du projet :
     - Publish Docker Image to Docker Hub - IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
 
   - DEPLOY HEROKU
-    - heroku/install - install dependance pour commande Heroku distancielle
+    - heroku/install - install Heroku CLI pour commande Heroku en distancielle
     - create app Heroku if not exist (wait 2 min after deleted an app !)
     - Set Var Env into heroku
     - heroku/deploy-via-git
     - make migration db
     - install db into heroku
+
+#### Soucis réglés pour le fonctionnement du Pipeline :
+- Mise à jour de Django en 3.2.14, avec intégration DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'.
+- CollectStatic pour éviter les warnings de Whitenoise durant le Pytest
+- Les migrations de la bases de données (oc_lettings-Site => app lettings + profiles) ont été appliquées puis supprimées pour une intégrations parfaite sur le serveur Heroku (la base de données actuelle n'ayant plus besoin des migrations de stuctures des tables sinon erreur d'intégration des migrations sur Heroku).
+
+## Surveillance CEP - Sentry.io
+### Pré-requis :
+  - Ouvrir un compte Sentry
+  - Intégrer la variable d'environnement "SENTRY_SDK" au fichier .env en local ainsi que dans le projet présent sur circleci. Indiquer comme valeur, l'URL fournit par sentry uniquement. L'intégration du code est déjà présent dans le fichier settings.py/urls.py pour tester l'erreur via la page [https://HEROKU_APP_NAME.herokuapp.com/sentry-debug](https://HEROKU_APP_NAME.herokuapp.com/sentry-debug)
