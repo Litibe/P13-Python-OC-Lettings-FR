@@ -105,7 +105,11 @@ NB : Est présent sur le DockerHub, la dernière image compilée et présente su
 Est présent à la racine du projet : 
   - .circleci/config.yml (fichier de gestion du pipeline CircleCi)
   - .env (fichier contenant les variables d'environnement)
-  - db.json (fichier contenant une copie de la base de données pour migration sur Héroku)
+  - db.json (fichier contenant une copie de la base de données pour migration sur Héroku, à metre à la racine du projet).
+Pour la constitution du fichier de base de données, merci d'exécuter dans votre environnement virtuel de développement la commande suivante dans votre terminal : 
+  ```shell
+   python manage.py dumpdata > db.json
+   ```
   - Dockerfile (fichier permettant la compilation du projet dans un container Docker)
   - Procfile (fichier nécessaire pour le lancement du serveur sur Heroku)
 
@@ -117,9 +121,9 @@ Pour un usage local, vous devez continuer votre fichier .env avec les variables 
   - DATABASE_NAME
   - SENTRY_SDK
 
-Pour CircleCI, dans la configuration du projet :
+Pour CircleCI, dans la configuration du projet - Variables d'Environnement :
 
-  Même chose de ci-dessus pour le fonctionnement de Django :
+  Même chose que ci-dessus pour le fonctionnement de Django :
   - SECRET_KEY
   - DEBUG
   - DATABASE_NAME
