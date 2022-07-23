@@ -12,7 +12,8 @@ DEBUG = int(os.environ['DEBUG'])
 SECRET_KEY = os.environ['SECRET_KEY']
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0',
-                 'oc-lettings-p13-lt.herokuapp.com']
+                 'oc-lettings-p13-lt.herokuapp.com',
+                 'oc-lettings-p13-lt2.herokuapp.com']
 
 URL_SENTRY = os.environ['SENTRY_SDK']
 sentry_sdk.init(
